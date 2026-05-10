@@ -57,9 +57,13 @@ All game data is in config files, not hardcoded:
 
 Grid-based map (64px tiles, 15×10 grid). `Grid` wraps a 2D tile array: `0`=buildable, `1`=path, `2`=blocked. Enemy movement follows pre-defined waypoints (grid coords) with linear interpolation — no pathfinding at runtime.
 
+### Audio (`src/audio/`)
+
+`MusicPlayer` generates procedural Chinese ancient-style music using Web Audio API oscillators. Pentatonic scale (宫商角徵羽) with instrument simulation: flute (sine+vibrato), zither (triangle), bell (sine+harmonic), pad (filtered sawtooth). Percussion via noise-burst BufferSource. Per-level configs with increasing BPM (96→110→130) and track density. Browser autoplay policy requires user gesture → `MusicPlayer.resume()` on first click.
+
 ### UI (`src/ui/`)
 
-Hybrid: HUD rendered on Canvas, interactive panels respond to mouse events. `Button` is a generic clickable component with hover states and multi-line label support.
+Hybrid: HUD rendered on Canvas, interactive panels respond to mouse events. `Button` is a generic clickable component with hover states and multi-line label support. `HUD.isMusicToggleClick()` detects clicks on the music toggle in the top bar.
 
 ## Key patterns
 
