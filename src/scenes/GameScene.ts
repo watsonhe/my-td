@@ -16,13 +16,14 @@ import { Projectile } from '../entities/Projectile';
 import { Particle } from '../entities/Particle';
 import { renderTower, renderEnemy, renderProjectile } from '../entities/Renderer';
 import { LevelConfig } from '../config/levels';
-import { renderHUD } from '../ui/HUD';
+import { renderHUD, isMusicToggleClick } from '../ui/HUD';
 import { TowerPanelUI } from '../ui/TowerPanel';
 import { UpgradePanel } from '../ui/UpgradePanel';
 import { WaveIndicator } from '../ui/WaveIndicator';
 import { CANVAS_HEIGHT, CANVAS_WIDTH } from '../utils/constants';
 import { TowerType } from '../config/towers';
 import { ResultScene } from './ResultScene';
+import { musicPlayer } from '../audio/MusicPlayer';
 
 export class GameScene extends Scene {
   private grid: Grid;
@@ -49,6 +50,7 @@ export class GameScene extends Scene {
   private selectedTower: Tower | null = null;
   private placingType: TowerType | null = null;
   private gameOver = false;
+  private musicOn = true;
   private levelConfig: LevelConfig;
 
   constructor(level: LevelConfig) {
@@ -82,9 +84,11 @@ export class GameScene extends Scene {
 
     this.setupEvents();
     this.waveIndicator.show('妖魔来袭！', 2);
+    musicPlayer.playLevel(this.levelConfig.id - 1);
   }
 
   exit(): void {
+    musicPlayer.stop();
     EventBus.clear();
   }
 
@@ -122,16 +126,22 @@ export class GameScene extends Scene {
       this.gameSpeed = this.gameSpeed === 1 ? 2 : this.gameSpeed === 2 ? 4 : 1;
     }
 
+    // Music toggle (works even during placement)
+    if (mouse.justClicked && isMusicToggleClick(mouse.x, mouse.y)) {
+      this.musicOn = !this.musicOn;
+      musicPlayer.setMasterVolume(this.musicOn ? 0.6 : 0);
+    }
+
     // Handle input for tower placement
     if (this.placingType) {
-      if (mouse.justClicked) {
+      if (mouse.justClicked && !isMusicToggleClick(mouse.x, mouse.y)) {
         this.tryPlaceTower(mouse.gridX, mouse.gridY);
         this.placingType = null;
       }
       if (mouse.justRightClicked) {
         this.placingType = null;
       }
-      return; // Don't process other clicks while placing
+      return;
     }
 
     // Tower selection / deselection + upgrade panel handling
@@ -252,6 +262,7 @@ export class GameScene extends Scene {
       totalWaves: this.waveSystem.totalWaves,
       kills: this.kills,
       gameSpeed: this.gameSpeed,
+      musicOn: this.musicOn,
     });
 
     // Tower panel
