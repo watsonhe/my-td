@@ -8,9 +8,9 @@ export interface TowerConfig {
   baseRange: number;
   baseAttackSpeed: number;
   buildCost: number;
-  color: string;
-  outlineColor: string;
-  glowColor: string;
+  color: string;        // main gi/skin color
+  outlineColor: string; // thick DB outline
+  glowColor: string;    // ki aura color
   icon: string;
   special: 'single' | 'splash' | 'dot' | 'chain';
   splashRadius?: number;
@@ -28,9 +28,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 120,
     baseAttackSpeed: 1.0,
     buildCost: 100,
-    color: '#ff6d3a',
-    outlineColor: '#c43a00',
-    glowColor: '#ffaa66',
+    color: '#f0833a',        // Goku orange gi
+    outlineColor: '#8b2a0a',
+    glowColor: '#ffd740',
     icon: '⚔',
     special: 'single',
   },
@@ -42,9 +42,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 100,
     baseAttackSpeed: 0.8,
     buildCost: 120,
-    color: '#42a5f5',
-    outlineColor: '#1565c0',
-    glowColor: '#90caf9',
+    color: '#2363a3',        // deep blue gi
+    outlineColor: '#0a2a5a',
+    glowColor: '#64b5f6',
     icon: '◎',
     special: 'splash',
     splashRadius: 60,
@@ -57,9 +57,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 110,
     baseAttackSpeed: 0.7,
     buildCost: 80,
-    color: '#66bb6a',
-    outlineColor: '#2e7d32',
-    glowColor: '#a5d6a7',
+    color: '#4caf50',        // green, nature
+    outlineColor: '#1b5e20',
+    glowColor: '#81c784',
     icon: '☯',
     special: 'dot',
     dotDamage: 8,
@@ -73,8 +73,8 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 130,
     baseAttackSpeed: 0.9,
     buildCost: 110,
-    color: '#e040fb',
-    outlineColor: '#9c27b0',
+    color: '#c241d0',        // mystic purple
+    outlineColor: '#6a1b7a',
     glowColor: '#ea80fc',
     icon: '㊯',
     special: 'chain',

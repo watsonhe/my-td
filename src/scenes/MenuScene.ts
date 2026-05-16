@@ -16,19 +16,19 @@ export class MenuScene extends Scene {
     this.audioInited = false;
     this.buttons = [
       {
-        x: CANVAS_WIDTH / 2 - 110,
-        y: 340,
-        width: 220,
-        height: 52,
+        x: CANVAS_WIDTH / 2 - 120,
+        y: 350,
+        width: 240,
+        height: 56,
         label: '开始游戏',
         onClick: () => {
           musicPlayer.stop();
           SceneManager.replace(new LevelSelectScene());
         },
-        color: '#ff6d3a',
-        hoverColor: '#ff8a5c',
+        color: '#f0833a',
+        hoverColor: '#ffb74d',
         textColor: '#fff',
-        fontSize: 22,
+        fontSize: 24,
       },
     ];
   }
@@ -48,69 +48,82 @@ export class MenuScene extends Scene {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    // Sky gradient background
+    // DB Tenkaichi Budokai sky: bright blue → white
     const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
-    grad.addColorStop(0, '#87ceeb');
-    grad.addColorStop(0.5, '#e8f5e9');
-    grad.addColorStop(1, '#c8e6c9');
+    grad.addColorStop(0, '#4a90d9');
+    grad.addColorStop(0.6, '#87ceeb');
+    grad.addColorStop(1, '#c8e0c8');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // Floating clouds
-    ctx.fillStyle = 'rgba(255,255,255,0.6)';
-    this.drawCloud(ctx, 140 + Math.sin(this.frame * 0.008) * 15, 80, 1.0);
-    this.drawCloud(ctx, 700 + Math.sin(this.frame * 0.006 + 1) * 20, 420, 0.8);
-    this.drawCloud(ctx, 200 + Math.sin(this.frame * 0.007 + 2) * 18, 500, 0.6);
+    // DB-style stylized clouds
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    this.drawDBCloud(ctx, 120 + Math.sin(this.frame * 0.005) * 12, 70, 1.0);
+    this.drawDBCloud(ctx, 720 + Math.sin(this.frame * 0.004 + 1) * 15, 130, 0.7);
+    this.drawDBCloud(ctx, 180 + Math.sin(this.frame * 0.006 + 2) * 10, 430, 0.55);
 
-    // Decorative mountain silhouettes
-    ctx.fillStyle = '#81c784';
+    // Rocky foreground (DB rocky wasteland feel)
+    ctx.fillStyle = '#c9a96e';
+    ctx.strokeStyle = '#8b6914';
+    ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.moveTo(0, CANVAS_HEIGHT);
-    ctx.lineTo(0, 480);
-    ctx.quadraticCurveTo(200, 380, 350, 460);
-    ctx.quadraticCurveTo(500, 320, 700, 440);
-    ctx.quadraticCurveTo(850, 360, CANVAS_WIDTH, 430);
+    ctx.lineTo(0, 490);
+    ctx.quadraticCurveTo(150, 430, 300, 470);
+    ctx.quadraticCurveTo(500, 390, 680, 460);
+    ctx.quadraticCurveTo(820, 420, CANVAS_WIDTH, 450);
     ctx.lineTo(CANVAS_WIDTH, CANVAS_HEIGHT);
     ctx.closePath();
     ctx.fill();
+    ctx.stroke();
 
-    // Title card
-    ctx.fillStyle = 'rgba(255,255,255,0.9)';
-    ctx.strokeStyle = '#ff6d3a';
-    ctx.lineWidth = 3;
+    // Title card (DB tournament board style)
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = '#f0833a';
+    ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.roundRect(CANVAS_WIDTH / 2 - 200, 100, 400, 140, 16);
+    ctx.roundRect(CANVAS_WIDTH / 2 - 210, 95, 420, 145, 14);
     ctx.fill();
     ctx.stroke();
 
-    // Title text
-    ctx.fillStyle = '#ff5722';
-    ctx.font = 'bold 56px "Microsoft YaHei", serif';
+    // DB-style red ribbon at top of card
+    ctx.fillStyle = '#e53935';
+    ctx.fillRect(CANVAS_WIDTH / 2 - 210, 95, 420, 8);
+
+    // Title
+    ctx.fillStyle = '#e53935';
+    ctx.font = 'bold 54px "Microsoft YaHei", serif';
     ctx.textAlign = 'center';
     ctx.fillText('修仙塔防', CANVAS_WIDTH / 2, 175);
 
     // Subtitle
-    ctx.fillStyle = '#795548';
-    ctx.font = '18px "Microsoft YaHei", sans-serif';
-    ctx.fillText('— 以仙道之力，守山门安宁 —', CANVAS_WIDTH / 2, 215);
-
-    // Tower type showcase
     ctx.fillStyle = '#5d4037';
-    ctx.font = '15px "Microsoft YaHei", sans-serif';
-    ctx.fillText('剑修 · 阵修 · 丹修 · 符修', CANVAS_WIDTH / 2, 290);
+    ctx.font = '17px "Microsoft YaHei", sans-serif';
+    ctx.fillText('— 以仙道之力，守山门安宁 —', CANVAS_WIDTH / 2, 218);
 
-    // Buttons
+    // Shenron accent text
+    ctx.fillStyle = '#f0833a';
+    ctx.font = 'bold 14px "Microsoft YaHei", sans-serif';
+    ctx.fillText('⚔ 剑修 · ◎ 阵修 · ☯ 丹修 · ㊯ 符修', CANVAS_WIDTH / 2, 300);
+
     for (const btn of this.buttons) {
       renderButton(ctx, btn, InputManager.mouse.x, InputManager.mouse.y);
     }
   }
 
-  private drawCloud(ctx: CanvasRenderingContext2D, x: number, y: number, scale: number): void {
+  private drawDBCloud(ctx: CanvasRenderingContext2D, x: number, y: number, s: number): void {
+    // DB clouds are distinct elongated ovals
     ctx.beginPath();
-    ctx.arc(x, y, 40 * scale, 0, Math.PI * 2);
-    ctx.arc(x + 35 * scale, y - 15 * scale, 30 * scale, 0, Math.PI * 2);
-    ctx.arc(x + 65 * scale, y, 35 * scale, 0, Math.PI * 2);
-    ctx.arc(x + 30 * scale, y + 10 * scale, 28 * scale, 0, Math.PI * 2);
+    ctx.ellipse(x, y, 50 * s, 18 * s, 0, 0, Math.PI * 2);
     ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(x + 30 * s, y - 8 * s, 35 * s, 14 * s, 0.2, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(x - 25 * s, y + 5 * s, 30 * s, 12 * s, -0.1, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
   }
 }

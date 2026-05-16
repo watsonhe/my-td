@@ -7,20 +7,20 @@ import { LEVELS } from '../config/levels';
 import { GameScene } from './GameScene';
 import { MenuScene } from './MenuScene';
 
-const LEVEL_COLORS = ['#ff8a65', '#ffb74d', '#ef5350'];
+const LEVEL_COLORS = ['#f0833a', '#2363a3', '#e53935'];
 
 export class LevelSelectScene extends Scene {
   private buttons: Button[] = [];
 
   enter(): void {
     this.buttons = LEVELS.map((level, i) => ({
-      x: CANVAS_WIDTH / 2 - 170,
-      y: 170 + i * 90,
-      width: 340,
-      height: 66,
+      x: CANVAS_WIDTH / 2 - 180,
+      y: 175 + i * 95,
+      width: 360,
+      height: 68,
       label: `${level.name}\n${level.description}`,
       onClick: () => SceneManager.replace(new GameScene(level)),
-      color: LEVEL_COLORS[i] ?? '#ff8a65',
+      color: LEVEL_COLORS[i] ?? '#f0833a',
       hoverColor: '#fff',
       textColor: '#fff',
       fontSize: 16,
@@ -33,8 +33,8 @@ export class LevelSelectScene extends Scene {
       height: 38,
       label: '返回',
       onClick: () => SceneManager.replace(new MenuScene()),
-      color: '#90a4ae',
-      hoverColor: '#b0bec5',
+      color: '#78909c',
+      hoverColor: '#90a4ae',
       textColor: '#fff',
     });
   }
@@ -42,25 +42,31 @@ export class LevelSelectScene extends Scene {
   exit(): void {}
 
   update(_dt: number): void {
-    const mouse = InputManager.mouse;
-    if (mouse.justClicked) {
-      handleButtonClick(this.buttons, mouse.x, mouse.y);
+    if (InputManager.mouse.justClicked) {
+      handleButtonClick(this.buttons, InputManager.mouse.x, InputManager.mouse.y);
     }
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    // Warm gradient background
+    // DB Namek sky gradient
     const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
-    grad.addColorStop(0, '#fff3e0');
-    grad.addColorStop(1, '#ffe0b2');
+    grad.addColorStop(0, '#5cb5a0');
+    grad.addColorStop(1, '#a8e0d0');
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // Title
-    ctx.fillStyle = '#e65100';
-    ctx.font = 'bold 38px "Microsoft YaHei", serif';
+    // Title card
+    ctx.fillStyle = '#fff';
+    ctx.strokeStyle = '#2363a3';
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.roundRect(CANVAS_WIDTH / 2 - 160, 60, 320, 60, 12);
+    ctx.fill();
+    ctx.stroke();
+    ctx.fillStyle = '#1565c0';
+    ctx.font = 'bold 32px "Microsoft YaHei", serif';
     ctx.textAlign = 'center';
-    ctx.fillText('选择关卡', CANVAS_WIDTH / 2, 110);
+    ctx.fillText('选择关卡', CANVAS_WIDTH / 2, 100);
 
     for (const btn of this.buttons) {
       renderButton(ctx, btn, InputManager.mouse.x, InputManager.mouse.y);

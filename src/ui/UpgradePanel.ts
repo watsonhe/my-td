@@ -14,19 +14,18 @@ export class UpgradePanel {
 
     const x = CANVAS_WIDTH - 210;
     const y = 46;
-
     const nextRealm = tower.level < 5 ? REALMS[tower.level] : null;
     const refund = Math.floor(tower.totalInvested * 0.5);
 
     if (nextRealm) {
       this.buttons.push({
         x,
-        y: y + 68,
+        y: y + 66,
         width: 190,
         height: 34,
         label: `突破 ${nextRealm.name}  (${nextRealm.cost}灵)`,
         onClick: () => {},
-        color: '#ffa726',
+        color: '#f0833a',
         hoverColor: '#ffb74d',
         textColor: '#fff',
         fontSize: 14,
@@ -35,13 +34,13 @@ export class UpgradePanel {
 
     this.buttons.push({
       x,
-      y: y + 108,
+      y: y + 106,
       width: 190,
       height: 30,
       label: `出售  (${refund} 灵)`,
       onClick: () => {},
-      color: '#ef5350',
-      hoverColor: '#e57373',
+      color: '#e53935',
+      hoverColor: '#ef5350',
       textColor: '#fff',
       fontSize: 14,
     });
@@ -49,37 +48,37 @@ export class UpgradePanel {
 
   get towerData(): Tower | null { return this.tower; }
 
-  render(ctx: CanvasRenderingContext2D, mouseX: number, mouseY: number): void {
+  render(ctx: CanvasRenderingContext2D, mx: number, my: number): void {
     if (!this.tower) return;
 
     const x = CANVAS_WIDTH - 210;
     const y = 46;
     const realm = REALMS[this.tower.level - 1];
 
-    // Panel background
+    // DB-style white panel with thick outline
     ctx.fillStyle = 'rgba(255,255,255,0.95)';
     ctx.strokeStyle = this.tower.config.outlineColor;
-    ctx.lineWidth = 2.5;
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.roundRect(x - 14, y - 14, 218, 170, 10);
+    ctx.roundRect(x - 14, y - 14, 218, 168, 10);
     ctx.fill();
     ctx.stroke();
 
-    // Title
-    ctx.fillStyle = '#37474f';
-    ctx.font = 'bold 17px "Microsoft YaHei", sans-serif';
-    ctx.textAlign = 'left';
-    ctx.fillText(`${this.tower.config.icon} ${this.tower.config.name}`, x, y + 12);
+    // DB orange accent bar
+    ctx.fillStyle = '#f0833a';
+    ctx.fillRect(x - 14, y - 14, 218, 5);
 
-    // Details
-    ctx.fillStyle = '#546e7a';
+    ctx.fillStyle = '#222';
+    ctx.font = 'bold 16px "Microsoft YaHei", sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${this.tower.config.icon} ${this.tower.config.name}`, x, y + 14);
+
+    ctx.fillStyle = '#555';
     ctx.font = '13px "Microsoft YaHei", sans-serif';
     ctx.fillText(`境界: ${realm.name}  Lv.${this.tower.level}`, x, y + 34);
     ctx.fillText(`伤害: ${this.tower.damage}  范围: ${this.tower.range}`, x, y + 52);
 
-    for (const btn of this.buttons) {
-      renderButton(ctx, btn, mouseX, mouseY);
-    }
+    for (const btn of this.buttons) renderButton(ctx, btn, mx, my);
   }
 
   getClickedButton(x: number, y: number): 'upgrade' | 'sell' | null {

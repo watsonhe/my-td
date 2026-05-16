@@ -23,30 +23,28 @@ export class ResultScene extends Scene {
   enter(): void {
     const nextLevel = LEVELS.find(l => l.id === this.level.id + 1);
 
-    this.buttons = [
-      {
-        x: CANVAS_WIDTH / 2 - 130,
-        y: 380,
-        width: 260,
-        height: 46,
-        label: '返回主菜单',
-        onClick: () => SceneManager.replace(new MenuScene()),
-        color: '#78909c',
-        hoverColor: '#90a4ae',
-        textColor: '#fff',
-      },
-    ];
+    this.buttons = [{
+      x: CANVAS_WIDTH / 2 - 130,
+      y: 390,
+      width: 260,
+      height: 46,
+      label: '返回主菜单',
+      onClick: () => SceneManager.replace(new MenuScene()),
+      color: '#78909c',
+      hoverColor: '#90a4ae',
+      textColor: '#fff',
+    }];
 
     if (this.won && nextLevel) {
       this.buttons.unshift({
         x: CANVAS_WIDTH / 2 - 130,
-        y: 315,
+        y: 325,
         width: 260,
         height: 48,
         label: `下一关: ${nextLevel.name}`,
         onClick: () => SceneManager.replace(new GameScene(nextLevel)),
-        color: '#66bb6a',
-        hoverColor: '#81c784',
+        color: '#4caf50',
+        hoverColor: '#66bb6a',
         textColor: '#fff',
       });
     }
@@ -54,13 +52,13 @@ export class ResultScene extends Scene {
     if (!this.won) {
       this.buttons.unshift({
         x: CANVAS_WIDTH / 2 - 130,
-        y: 315,
+        y: 325,
         width: 260,
         height: 48,
         label: '重新挑战',
         onClick: () => SceneManager.replace(new GameScene(this.level)),
-        color: '#ff7043',
-        hoverColor: '#ff8a65',
+        color: '#f0833a',
+        hoverColor: '#ffb74d',
         textColor: '#fff',
       });
     }
@@ -75,45 +73,44 @@ export class ResultScene extends Scene {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    // Background
-    const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
-    if (this.won) {
-      grad.addColorStop(0, '#fff8e1');
-      grad.addColorStop(1, '#ffecb3');
-    } else {
-      grad.addColorStop(0, '#fce4ec');
-      grad.addColorStop(1, '#f8bbd0');
-    }
-    ctx.fillStyle = grad;
+    // DB sky
+    const bg = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
+    bg.addColorStop(0, this.won ? '#e8f5e9' : '#fce4ec');
+    bg.addColorStop(1, this.won ? '#c8e6c9' : '#f8bbd0');
+    ctx.fillStyle = bg;
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    // Result card
-    ctx.fillStyle = 'rgba(255,255,255,0.95)';
-    ctx.strokeStyle = this.won ? '#ffc107' : '#f44336';
-    ctx.lineWidth = 3;
+    // DB-style result card
+    ctx.fillStyle = 'rgba(255,255,255,0.96)';
+    ctx.strokeStyle = this.won ? '#ffc107' : '#e53935';
+    ctx.lineWidth = 4;
     ctx.beginPath();
-    ctx.roundRect(CANVAS_WIDTH / 2 - 200, 90, 400, 180, 16);
+    ctx.roundRect(CANVAS_WIDTH / 2 - 200, 90, 400, 190, 14);
     ctx.fill();
     ctx.stroke();
 
+    // DB accent stripe
+    ctx.fillStyle = this.won ? '#ffc107' : '#e53935';
+    ctx.fillRect(CANVAS_WIDTH / 2 - 200, 90, 400, 6);
+
     // Title
-    ctx.fillStyle = this.won ? '#ff8f00' : '#c62828';
+    ctx.fillStyle = this.won ? '#e65100' : '#c62828';
     ctx.font = 'bold 44px "Microsoft YaHei", serif';
     ctx.textAlign = 'center';
-    ctx.fillText(this.won ? '守山成功！' : '阵眼破碎...', CANVAS_WIDTH / 2, 155);
+    ctx.fillText(this.won ? '守山成功！' : '阵眼破碎...', CANVAS_WIDTH / 2, 158);
 
     // Subtitle
-    ctx.fillStyle = '#795548';
-    ctx.font = '18px "Microsoft YaHei", sans-serif';
+    ctx.fillStyle = '#555';
+    ctx.font = '17px "Microsoft YaHei", sans-serif';
     ctx.fillText(
-      this.won ? `${this.level.name} 已平定，仙门安宁。` : `${this.level.name} 失守，妖魔入侵...`,
+      this.won ? `${this.level.name} 已平定！` : `${this.level.name} 失守...`,
       CANVAS_WIDTH / 2, 200,
     );
 
-    // Stats
-    ctx.fillStyle = '#5d4037';
-    ctx.font = 'bold 20px "Microsoft YaHei", sans-serif';
-    ctx.fillText(`击杀妖魔: ${this.kills}`, CANVAS_WIDTH / 2, 245);
+    // Stats with DB power-level feel
+    ctx.fillStyle = '#f0833a';
+    ctx.font = 'bold 22px "Microsoft YaHei", sans-serif';
+    ctx.fillText(`击杀: ${this.kills}`, CANVAS_WIDTH / 2, 252);
 
     for (const btn of this.buttons) {
       renderButton(ctx, btn, InputManager.mouse.x, InputManager.mouse.y);

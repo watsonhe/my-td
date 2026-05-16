@@ -8,25 +8,25 @@ export class TowerPanelUI {
 
   setAvailable(types: TowerType[], onSelect: (type: TowerType) => void, canAfford: (cost: number) => boolean): void {
     this.types = types;
-    const y = CANVAS_HEIGHT - 90;
-    const btnW = 105;
-    const spacing = 10;
-    const totalW = types.length * btnW + (types.length - 1) * spacing;
-    const startX = (CANVAS_WIDTH - totalW) / 2;
+    const y = CANVAS_HEIGHT - 88;
+    const btnW = 108;
+    const gap = 10;
+    const tw = types.length * btnW + (types.length - 1) * gap;
+    const sx = (CANVAS_WIDTH - tw) / 2;
 
     this.buttons = types.map((type, i) => {
-      const config = TOWER_CONFIGS[type];
+      const cfg = TOWER_CONFIGS[type];
       return {
-        x: startX + i * (btnW + spacing),
+        x: sx + i * (btnW + gap),
         y,
         width: btnW,
-        height: 82,
-        label: `${config.icon} ${config.name}\n${config.buildCost} 灵`,
+        height: 80,
+        label: `${cfg.icon} ${cfg.name}\n${cfg.buildCost} 灵`,
         onClick: () => onSelect(type),
-        color: config.color,
-        hoverColor: '#fff',
+        color: cfg.color,
+        hoverColor: cfg.glowColor,
         textColor: '#fff',
-        enabled: canAfford(config.buildCost),
+        enabled: canAfford(cfg.buildCost),
         fontSize: 14,
       };
     });
@@ -34,15 +34,12 @@ export class TowerPanelUI {
 
   updateAfford(canAfford: (cost: number) => boolean): void {
     for (let i = 0; i < this.buttons.length; i++) {
-      const config = TOWER_CONFIGS[this.types[i]];
-      this.buttons[i].enabled = canAfford(config.buildCost);
+      this.buttons[i].enabled = canAfford(TOWER_CONFIGS[this.types[i]].buildCost);
     }
   }
 
-  render(ctx: CanvasRenderingContext2D, mouseX: number, mouseY: number): void {
-    for (const btn of this.buttons) {
-      renderButton(ctx, btn, mouseX, mouseY);
-    }
+  render(ctx: CanvasRenderingContext2D, mx: number, my: number): void {
+    for (const btn of this.buttons) renderButton(ctx, btn, mx, my);
   }
 
   getClicked(x: number, y: number): TowerType | null {

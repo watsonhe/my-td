@@ -11,56 +11,50 @@ export interface HUDData {
 }
 
 export function renderHUD(ctx: CanvasRenderingContext2D, data: HUDData): void {
-  // Top bar with gradient
-  const barGrad = ctx.createLinearGradient(0, 0, 0, 36);
-  barGrad.addColorStop(0, 'rgba(0,0,0,0.55)');
-  barGrad.addColorStop(1, 'rgba(0,0,0,0.35)');
-  ctx.fillStyle = barGrad;
-  ctx.fillRect(0, 0, CANVAS_WIDTH, 38);
+  // DB-style top bar: dark with accent stripe
+  ctx.fillStyle = 'rgba(20,20,30,0.85)';
+  ctx.fillRect(0, 0, CANVAS_WIDTH, 36);
 
-  // Bottom border accent
-  ctx.fillStyle = '#ffb74d';
-  ctx.fillRect(0, 38, CANVAS_WIDTH, 2);
+  // Orange accent line (Goku's gi color)
+  ctx.fillStyle = '#f0833a';
+  ctx.fillRect(0, 36, CANVAS_WIDTH, 3);
 
-  ctx.font = 'bold 15px "Microsoft YaHei", sans-serif';
+  ctx.font = 'bold 14px "Microsoft YaHei", sans-serif';
   ctx.textBaseline = 'middle';
 
-  // Spirit — gold coin style
+  // Spirit
   ctx.fillStyle = '#ffd740';
   ctx.textAlign = 'left';
-  ctx.fillText(`⚡ 灵力: ${data.spirit}`, 12, 19);
+  ctx.fillText(`⚡ 灵力: ${data.spirit}`, 12, 18);
 
-  // Lives — heart style
+  // Lives
   ctx.fillStyle = '#ff5252';
-  ctx.fillText(`❤ 阵眼: ${data.lives}`, 175, 19);
+  ctx.fillText(`❤ 阵眼: ${data.lives}`, 180, 18);
 
-  // Wave number
+  // Wave (scouter-style)
   ctx.fillStyle = '#64b5f6';
-  const waveLabel = data.wave > 0 ? `⚔ 妖魔潮: ${data.wave}/${data.totalWaves}` : '⏳ 准备中...';
-  ctx.fillText(waveLabel, 350, 19);
+  const waveLabel = data.wave > 0 ? `波 ${data.wave}/${data.totalWaves}` : '准备...';
+  ctx.fillText(`⚔ ${waveLabel}`, 340, 18);
 
   // Music
-  ctx.fillStyle = data.musicOn ? '#bdbdbd' : '#757575';
+  ctx.fillStyle = data.musicOn ? '#ccc' : '#666';
   ctx.textAlign = 'right';
-  ctx.fillText(data.musicOn ? '♪ 音乐' : '♪ 静音', CANVAS_WIDTH - 100, 19);
+  ctx.fillText(data.musicOn ? '♪' : '✕', CANVAS_WIDTH - 100, 18);
 
-  // Speed badge
-  ctx.fillStyle = '#ffb74d';
-  ctx.fillText(`▶ x${data.gameSpeed}`, CANVAS_WIDTH - 12, 19);
+  // Speed (DB power level style)
+  ctx.fillStyle = '#f0833a';
+  ctx.fillText(`x${data.gameSpeed}`, CANVAS_WIDTH - 16, 18);
 
-  // Bottom tower panel area background
+  // Bottom tower panel
   const bottomY = CANVAS_HEIGHT - 100;
-  const bottomGrad = ctx.createLinearGradient(0, bottomY, 0, CANVAS_HEIGHT);
-  bottomGrad.addColorStop(0, 'rgba(0,0,0,0.6)');
-  bottomGrad.addColorStop(1, 'rgba(0,0,0,0.75)');
-  ctx.fillStyle = bottomGrad;
+  ctx.fillStyle = 'rgba(20,20,30,0.88)';
   ctx.fillRect(0, bottomY, CANVAS_WIDTH, 100);
 
-  // Top accent line on bottom panel
-  ctx.fillStyle = '#ff7043';
+  // DB orange accent on bottom panel
+  ctx.fillStyle = '#f0833a';
   ctx.fillRect(0, bottomY, CANVAS_WIDTH, 3);
 }
 
 export function isMusicToggleClick(x: number, y: number): boolean {
-  return y < 38 && x > CANVAS_WIDTH - 130 && x < CANVAS_WIDTH - 60;
+  return y < 36 && x > CANVAS_WIDTH - 130 && x < CANVAS_WIDTH - 60;
 }

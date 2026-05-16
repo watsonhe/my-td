@@ -206,21 +206,21 @@ export class GameScene extends Scene {
     // Map
     this.mapRenderer.render(ctx, this.grid, this.towers);
 
-    // Range indicator for selected tower
+    // Range indicator — DB ki-sense style
     if (this.selectedTower) {
       const pos = this.grid.gridToPixel(this.selectedTower.gridX, this.selectedTower.gridY);
       ctx.beginPath();
       ctx.arc(pos.x, pos.y, this.selectedTower.range, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.1)';
+      ctx.fillStyle = 'rgba(255,255,255,0.06)';
       ctx.fill();
-      ctx.strokeStyle = this.selectedTower.config.outlineColor + '80';
+      ctx.strokeStyle = this.selectedTower.config.glowColor + '50';
       ctx.lineWidth = 2;
-      ctx.setLineDash([5, 6]);
+      ctx.setLineDash([5, 7]);
       ctx.stroke();
       ctx.setLineDash([]);
     }
 
-    // Placement preview
+    // Placement preview — DB ki landing zone
     if (this.placingType) {
       const mouse = InputManager.mouse;
       const pos = this.grid.gridToPixel(mouse.gridX, mouse.gridY);
@@ -228,16 +228,15 @@ export class GameScene extends Scene {
         !this.towers.some(t => t.gridX === mouse.gridX && t.gridY === mouse.gridY);
 
       ctx.save();
-      ctx.shadowColor = canPlace ? 'rgba(139,195,74,0.5)' : 'rgba(244,67,54,0.5)';
-      ctx.shadowBlur = 12;
+      ctx.shadowColor = canPlace ? 'rgba(0,200,255,0.6)' : 'rgba(244,67,54,0.6)';
+      ctx.shadowBlur = 14;
       ctx.beginPath();
       ctx.arc(pos.x, pos.y, 22, 0, Math.PI * 2);
-      ctx.fillStyle = canPlace ? 'rgba(139,195,74,0.35)' : 'rgba(244,67,54,0.35)';
+      ctx.fillStyle = canPlace ? 'rgba(0,180,255,0.3)' : 'rgba(244,67,54,0.3)';
       ctx.fill();
       ctx.restore();
-      ctx.strokeStyle = canPlace ? '#8bc34a' : '#f44336';
-      ctx.lineWidth = 2.5;
-      ctx.setLineDash([]);
+      ctx.strokeStyle = canPlace ? '#29b6f6' : '#f44336';
+      ctx.lineWidth = 3;
       ctx.stroke();
     }
 
@@ -284,7 +283,7 @@ export class GameScene extends Scene {
       ctx.fillStyle = 'rgba(0,0,0,0.5)';
       ctx.font = 'bold 14px "Microsoft YaHei", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('🔨 点击地图放置 (右键取消)', CANVAS_WIDTH / 2, CANVAS_HEIGHT - 110);
+      ctx.fillText('点击地图放置 (右键取消)', CANVAS_WIDTH / 2, CANVAS_HEIGHT - 110);
     }
   }
 

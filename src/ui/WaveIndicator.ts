@@ -19,25 +19,28 @@ export class WaveIndicator {
   render(ctx: CanvasRenderingContext2D): void {
     if (!this.message) return;
 
-    const x = CANVAS_WIDTH / 2 - 160;
-    const y = 230;
-    const w = 320;
-    const h = 52;
+    const x = CANVAS_WIDTH / 2 - 155;
+    const y = 225;
+    const w = 310;
+    const h = 50;
 
-    // Background card
-    ctx.fillStyle = 'rgba(255,255,255,0.93)';
-    ctx.strokeStyle = '#ff7043';
-    ctx.lineWidth = 2.5;
+    // DB alert panel
+    ctx.fillStyle = 'rgba(255,255,255,0.94)';
+    ctx.strokeStyle = '#f0833a';
+    ctx.lineWidth = 3;
     ctx.beginPath();
-    ctx.roundRect(x, y, w, h, 12);
+    ctx.roundRect(x, y, w, h, 10);
     ctx.fill();
     ctx.stroke();
 
-    // Message
-    ctx.fillStyle = '#e65100';
+    // DB red accent stripe
+    ctx.fillStyle = '#e53935';
+    ctx.fillRect(x, y, w, 5);
+
+    ctx.fillStyle = '#c62828';
     ctx.font = 'bold 22px "Microsoft YaHei", sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
-    ctx.fillText(this.message, CANVAS_WIDTH / 2, y + h / 2);
+    ctx.fillText(this.message, CANVAS_WIDTH / 2, y + h / 2 + 2);
   }
 }

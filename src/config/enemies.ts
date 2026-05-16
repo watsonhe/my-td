@@ -13,10 +13,10 @@ export interface EnemyConfig {
   speed: number;
   reward: number;
   damage: number;
-  color: string;
-  outlineColor: string;
+  color: string;        // skin color
+  outlineColor: string; // thick outline
+  accentColor: string;  // armor/feature color
   eyeColor: string;
-  mouthColor: string;
   size: number;
 }
 
@@ -27,10 +27,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 60,
     reward: 15,
     damage: 1,
-    color: '#ff6b6b',
-    outlineColor: '#c0392b',
+    color: '#7bcb4a',        // Saibaiman green
+    outlineColor: '#2d5a1a',
+    accentColor: '#c73e3e',  // red spots
     eyeColor: '#fff',
-    mouthColor: '#7b0000',
     size: 24,
   },
   beast: {
@@ -39,10 +39,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 45,
     reward: 30,
     damage: 2,
-    color: '#ffab40',
-    outlineColor: '#bf6f00',
-    eyeColor: '#fff',
-    mouthColor: '#6b3a00',
+    color: '#f0833a',        // orange-brown dinosaur
+    outlineColor: '#8b3a0a',
+    accentColor: '#ffcc00',  // yellow belly
+    eyeColor: '#ff0',
     size: 30,
   },
   demon: {
@@ -51,10 +51,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 35,
     reward: 60,
     damage: 3,
-    color: '#b388ff',
-    outlineColor: '#5a1fc0',
+    color: '#7c5ce0',        // Freeza soldier purple
+    outlineColor: '#3a1f8a',
+    accentColor: '#ff4444',  // red scouter/armor
     eyeColor: '#ff0',
-    mouthColor: '#2a0050',
     size: 34,
   },
   boss: {
@@ -63,10 +63,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 25,
     reward: 200,
     damage: 10,
-    color: '#ff1744',
-    outlineColor: '#8b0000',
-    eyeColor: '#ff0',
-    mouthColor: '#4a0000',
+    color: '#ff7093',        // Majin Buu pink
+    outlineColor: '#8b1a3a',
+    accentColor: '#ffe44d',  // gold crown/cape
+    eyeColor: '#fff',
     size: 44,
   },
 };
