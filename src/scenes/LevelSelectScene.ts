@@ -7,31 +7,35 @@ import { LEVELS } from '../config/levels';
 import { GameScene } from './GameScene';
 import { MenuScene } from './MenuScene';
 
+const LEVEL_COLORS = ['#ff8a65', '#ffb74d', '#ef5350'];
+
 export class LevelSelectScene extends Scene {
   private buttons: Button[] = [];
 
   enter(): void {
     this.buttons = LEVELS.map((level, i) => ({
-      x: CANVAS_WIDTH / 2 - 150,
-      y: 160 + i * 80,
-      width: 300,
-      height: 60,
-      label: `${level.name} — ${level.description}`,
+      x: CANVAS_WIDTH / 2 - 170,
+      y: 170 + i * 90,
+      width: 340,
+      height: 66,
+      label: `${level.name}\n${level.description}`,
       onClick: () => SceneManager.replace(new GameScene(level)),
-      color: '#3a4a3a',
-      hoverColor: '#5a7a5a',
+      color: LEVEL_COLORS[i] ?? '#ff8a65',
+      hoverColor: '#fff',
+      textColor: '#fff',
+      fontSize: 16,
     }));
 
-    // Back button
     this.buttons.push({
       x: CANVAS_WIDTH / 2 - 60,
       y: CANVAS_HEIGHT - 80,
       width: 120,
-      height: 36,
+      height: 38,
       label: '返回',
       onClick: () => SceneManager.replace(new MenuScene()),
-      color: '#4a4a4a',
-      hoverColor: '#6a6a6a',
+      color: '#90a4ae',
+      hoverColor: '#b0bec5',
+      textColor: '#fff',
     });
   }
 
@@ -45,17 +49,21 @@ export class LevelSelectScene extends Scene {
   }
 
   render(ctx: CanvasRenderingContext2D): void {
-    ctx.fillStyle = '#1a1a2e';
+    // Warm gradient background
+    const grad = ctx.createLinearGradient(0, 0, 0, CANVAS_HEIGHT);
+    grad.addColorStop(0, '#fff3e0');
+    grad.addColorStop(1, '#ffe0b2');
+    ctx.fillStyle = grad;
     ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
 
-    ctx.fillStyle = '#f0e0c0';
-    ctx.font = 'bold 36px serif';
+    // Title
+    ctx.fillStyle = '#e65100';
+    ctx.font = 'bold 38px "Microsoft YaHei", serif';
     ctx.textAlign = 'center';
-    ctx.fillText('选择关卡', CANVAS_WIDTH / 2, 100);
+    ctx.fillText('选择关卡', CANVAS_WIDTH / 2, 110);
 
-    const mouse = InputManager.mouse;
     for (const btn of this.buttons) {
-      renderButton(ctx, btn, mouse.x, mouse.y);
+      renderButton(ctx, btn, InputManager.mouse.x, InputManager.mouse.y);
     }
   }
 }

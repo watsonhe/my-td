@@ -211,11 +211,11 @@ export class GameScene extends Scene {
       const pos = this.grid.gridToPixel(this.selectedTower.gridX, this.selectedTower.gridY);
       ctx.beginPath();
       ctx.arc(pos.x, pos.y, this.selectedTower.range, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,0.08)';
+      ctx.fillStyle = 'rgba(255,255,255,0.1)';
       ctx.fill();
-      ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+      ctx.strokeStyle = this.selectedTower.config.outlineColor + '80';
       ctx.lineWidth = 2;
-      ctx.setLineDash([4, 4]);
+      ctx.setLineDash([5, 6]);
       ctx.stroke();
       ctx.setLineDash([]);
     }
@@ -227,12 +227,17 @@ export class GameScene extends Scene {
       const canPlace = this.grid.isBuildable(mouse.gridX, mouse.gridY) &&
         !this.towers.some(t => t.gridX === mouse.gridX && t.gridY === mouse.gridY);
 
+      ctx.save();
+      ctx.shadowColor = canPlace ? 'rgba(139,195,74,0.5)' : 'rgba(244,67,54,0.5)';
+      ctx.shadowBlur = 12;
       ctx.beginPath();
-      ctx.arc(pos.x, pos.y, 20, 0, Math.PI * 2);
-      ctx.fillStyle = canPlace ? 'rgba(0,255,0,0.3)' : 'rgba(255,0,0,0.3)';
+      ctx.arc(pos.x, pos.y, 22, 0, Math.PI * 2);
+      ctx.fillStyle = canPlace ? 'rgba(139,195,74,0.35)' : 'rgba(244,67,54,0.35)';
       ctx.fill();
-      ctx.strokeStyle = canPlace ? '#0f0' : '#f00';
-      ctx.lineWidth = 1;
+      ctx.restore();
+      ctx.strokeStyle = canPlace ? '#8bc34a' : '#f44336';
+      ctx.lineWidth = 2.5;
+      ctx.setLineDash([]);
       ctx.stroke();
     }
 
@@ -276,10 +281,10 @@ export class GameScene extends Scene {
 
     // Placing mode hint
     if (this.placingType) {
-      ctx.fillStyle = '#f0e0c0';
-      ctx.font = '14px sans-serif';
+      ctx.fillStyle = 'rgba(0,0,0,0.5)';
+      ctx.font = 'bold 14px "Microsoft YaHei", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('点击地图放置 (右键取消)', CANVAS_WIDTH / 2, CANVAS_HEIGHT - 110);
+      ctx.fillText('🔨 点击地图放置 (右键取消)', CANVAS_WIDTH / 2, CANVAS_HEIGHT - 110);
     }
   }
 

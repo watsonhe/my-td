@@ -6,10 +6,12 @@ export interface TowerConfig {
   description: string;
   baseDamage: number;
   baseRange: number;
-  baseAttackSpeed: number;   // attacks per second
+  baseAttackSpeed: number;
   buildCost: number;
   color: string;
-  icon: string;              // text character for rendering
+  outlineColor: string;
+  glowColor: string;
+  icon: string;
   special: 'single' | 'splash' | 'dot' | 'chain';
   splashRadius?: number;
   dotDamage?: number;
@@ -26,7 +28,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 120,
     baseAttackSpeed: 1.0,
     buildCost: 100,
-    color: '#f0c040',
+    color: '#ff6d3a',
+    outlineColor: '#c43a00',
+    glowColor: '#ffaa66',
     icon: '⚔',
     special: 'single',
   },
@@ -38,7 +42,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 100,
     baseAttackSpeed: 0.8,
     buildCost: 120,
-    color: '#60c0f0',
+    color: '#42a5f5',
+    outlineColor: '#1565c0',
+    glowColor: '#90caf9',
     icon: '◎',
     special: 'splash',
     splashRadius: 60,
@@ -51,7 +57,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 110,
     baseAttackSpeed: 0.7,
     buildCost: 80,
-    color: '#90d040',
+    color: '#66bb6a',
+    outlineColor: '#2e7d32',
+    glowColor: '#a5d6a7',
     icon: '☯',
     special: 'dot',
     dotDamage: 8,
@@ -65,7 +73,9 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     baseRange: 130,
     baseAttackSpeed: 0.9,
     buildCost: 110,
-    color: '#e080e0',
+    color: '#e040fb',
+    outlineColor: '#9c27b0',
+    glowColor: '#ea80fc',
     icon: '㊯',
     special: 'chain',
     chainCount: 3,

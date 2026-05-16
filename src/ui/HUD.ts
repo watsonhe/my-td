@@ -11,42 +11,56 @@ export interface HUDData {
 }
 
 export function renderHUD(ctx: CanvasRenderingContext2D, data: HUDData): void {
-  // Top info bar
-  ctx.fillStyle = 'rgba(0,0,0,0.7)';
-  ctx.fillRect(0, 0, CANVAS_WIDTH, 36);
+  // Top bar with gradient
+  const barGrad = ctx.createLinearGradient(0, 0, 0, 36);
+  barGrad.addColorStop(0, 'rgba(0,0,0,0.55)');
+  barGrad.addColorStop(1, 'rgba(0,0,0,0.35)');
+  ctx.fillStyle = barGrad;
+  ctx.fillRect(0, 0, CANVAS_WIDTH, 38);
 
-  ctx.font = 'bold 16px sans-serif';
+  // Bottom border accent
+  ctx.fillStyle = '#ffb74d';
+  ctx.fillRect(0, 38, CANVAS_WIDTH, 2);
+
+  ctx.font = 'bold 15px "Microsoft YaHei", sans-serif';
   ctx.textBaseline = 'middle';
 
-  // Spirit
-  ctx.fillStyle = '#f0c040';
+  // Spirit — gold coin style
+  ctx.fillStyle = '#ffd740';
   ctx.textAlign = 'left';
-  ctx.fillText(`灵力: ${data.spirit}`, 12, 18);
+  ctx.fillText(`⚡ 灵力: ${data.spirit}`, 12, 19);
 
-  // Lives
-  ctx.fillStyle = '#f06060';
-  ctx.fillText(`阵眼耐久: ${data.lives}`, 160, 18);
+  // Lives — heart style
+  ctx.fillStyle = '#ff5252';
+  ctx.fillText(`❤ 阵眼: ${data.lives}`, 175, 19);
 
-  // Wave
-  ctx.fillStyle = '#c0c0f0';
-  const waveLabel = data.wave > 0 ? `妖魔潮: ${data.wave}/${data.totalWaves}` : '妖魔潮: 准备中...';
-  ctx.fillText(waveLabel, 340, 18);
+  // Wave number
+  ctx.fillStyle = '#64b5f6';
+  const waveLabel = data.wave > 0 ? `⚔ 妖魔潮: ${data.wave}/${data.totalWaves}` : '⏳ 准备中...';
+  ctx.fillText(waveLabel, 350, 19);
 
-  // Music toggle
-  ctx.fillStyle = data.musicOn ? '#c0c0c0' : '#666';
+  // Music
+  ctx.fillStyle = data.musicOn ? '#bdbdbd' : '#757575';
   ctx.textAlign = 'right';
-  ctx.fillText(data.musicOn ? '♪ 音乐' : '♪ 静音', CANVAS_WIDTH - 100, 18);
+  ctx.fillText(data.musicOn ? '♪ 音乐' : '♪ 静音', CANVAS_WIDTH - 100, 19);
 
-  // Speed
-  ctx.fillStyle = '#a0a0a0';
-  ctx.fillText(`速度: x${data.gameSpeed}`, CANVAS_WIDTH - 12, 18);
+  // Speed badge
+  ctx.fillStyle = '#ffb74d';
+  ctx.fillText(`▶ x${data.gameSpeed}`, CANVAS_WIDTH - 12, 19);
 
-  // Bottom panel bg
+  // Bottom tower panel area background
   const bottomY = CANVAS_HEIGHT - 100;
-  ctx.fillStyle = 'rgba(0,0,0,0.75)';
-  ctx.fillRect(0, bottomY, CANVAS_WIDTH, 40);
+  const bottomGrad = ctx.createLinearGradient(0, bottomY, 0, CANVAS_HEIGHT);
+  bottomGrad.addColorStop(0, 'rgba(0,0,0,0.6)');
+  bottomGrad.addColorStop(1, 'rgba(0,0,0,0.75)');
+  ctx.fillStyle = bottomGrad;
+  ctx.fillRect(0, bottomY, CANVAS_WIDTH, 100);
+
+  // Top accent line on bottom panel
+  ctx.fillStyle = '#ff7043';
+  ctx.fillRect(0, bottomY, CANVAS_WIDTH, 3);
 }
 
 export function isMusicToggleClick(x: number, y: number): boolean {
-  return y < 36 && x > CANVAS_WIDTH - 130 && x < CANVAS_WIDTH - 60;
+  return y < 38 && x > CANVAS_WIDTH - 130 && x < CANVAS_WIDTH - 60;
 }

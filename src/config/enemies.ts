@@ -10,10 +10,13 @@ export const ENEMY_LABELS: Record<EnemyType, string> = {
 export interface EnemyConfig {
   type: EnemyType;
   hp: number;
-  speed: number;        // pixels per second
-  reward: number;       // spirit gained on kill
-  damage: number;       // lives lost when reaching end
+  speed: number;
+  reward: number;
+  damage: number;
   color: string;
+  outlineColor: string;
+  eyeColor: string;
+  mouthColor: string;
   size: number;
 }
 
@@ -24,7 +27,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 60,
     reward: 15,
     damage: 1,
-    color: '#e06060',
+    color: '#ff6b6b',
+    outlineColor: '#c0392b',
+    eyeColor: '#fff',
+    mouthColor: '#7b0000',
     size: 24,
   },
   beast: {
@@ -33,7 +39,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 45,
     reward: 30,
     damage: 2,
-    color: '#d08040',
+    color: '#ffab40',
+    outlineColor: '#bf6f00',
+    eyeColor: '#fff',
+    mouthColor: '#6b3a00',
     size: 30,
   },
   demon: {
@@ -42,7 +51,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 35,
     reward: 60,
     damage: 3,
-    color: '#8040c0',
+    color: '#b388ff',
+    outlineColor: '#5a1fc0',
+    eyeColor: '#ff0',
+    mouthColor: '#2a0050',
     size: 34,
   },
   boss: {
@@ -51,7 +63,10 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     speed: 25,
     reward: 200,
     damage: 10,
-    color: '#ff4040',
+    color: '#ff1744',
+    outlineColor: '#8b0000',
+    eyeColor: '#ff0',
+    mouthColor: '#4a0000',
     size: 44,
   },
 };

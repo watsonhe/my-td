@@ -9,7 +9,7 @@ export class TowerPanelUI {
   setAvailable(types: TowerType[], onSelect: (type: TowerType) => void, canAfford: (cost: number) => boolean): void {
     this.types = types;
     const y = CANVAS_HEIGHT - 90;
-    const btnW = 100;
+    const btnW = 105;
     const spacing = 10;
     const totalW = types.length * btnW + (types.length - 1) * spacing;
     const startX = (CANVAS_WIDTH - totalW) / 2;
@@ -20,21 +20,21 @@ export class TowerPanelUI {
         x: startX + i * (btnW + spacing),
         y,
         width: btnW,
-        height: 80,
-        label: `${config.icon} ${config.name}\n${config.buildCost}灵`,
+        height: 82,
+        label: `${config.icon} ${config.name}\n${config.buildCost} 灵`,
         onClick: () => onSelect(type),
-        color: '#3a4a3a',
-        hoverColor: '#5a7a5a',
+        color: config.color,
+        hoverColor: '#fff',
+        textColor: '#fff',
         enabled: canAfford(config.buildCost),
-        fontSize: 13,
+        fontSize: 14,
       };
     });
   }
 
   updateAfford(canAfford: (cost: number) => boolean): void {
     for (let i = 0; i < this.buttons.length; i++) {
-      const type = this.types[i];
-      const config = TOWER_CONFIGS[type];
+      const config = TOWER_CONFIGS[this.types[i]];
       this.buttons[i].enabled = canAfford(config.buildCost);
     }
   }
