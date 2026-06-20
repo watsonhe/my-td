@@ -14,6 +14,10 @@ export interface Tower {
   targetId: number | null;
   config: TowerConfig;
   totalInvested: number; // total spirit spent (build + upgrades)
+  hp: number;
+  maxHp: number;
+  alive: boolean;
+  damageFlashTimer: number; // seconds remaining for red flash effect
 }
 
 let nextTowerId = 1;
@@ -33,5 +37,9 @@ export function createTower(type: TowerType, gridX: number, gridY: number): Towe
     targetId: null,
     config,
     totalInvested: config.buildCost,
+    hp: config.hp,
+    maxHp: config.hp,
+    alive: true,
+    damageFlashTimer: 0,
   };
 }

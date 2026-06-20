@@ -18,6 +18,9 @@ export interface EnemyConfig {
   accentColor: string;  // armor/feature color
   eyeColor: string;
   size: number;
+  attackDamage?: number;   // tower-destroying: damage per hit
+  attackRange?: number;    // tower-destroying: proximity trigger radius (px)
+  attackCooldown?: number; // tower-destroying: seconds between attacks
 }
 
 export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
@@ -60,7 +63,7 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
   boss: {
     type: 'boss',
     hp: 1200,
-    speed: 25,
+    speed: 18,
     reward: 200,
     damage: 10,
     color: '#ff7093',        // Majin Buu pink
@@ -68,5 +71,8 @@ export const ENEMY_CONFIGS: Record<EnemyType, EnemyConfig> = {
     accentColor: '#ffe44d',  // gold crown/cape
     eyeColor: '#fff',
     size: 44,
+    attackDamage: 60,
+    attackRange: 80,
+    attackCooldown: 2.5,
   },
 };

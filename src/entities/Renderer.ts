@@ -13,6 +13,8 @@ const SHADOW_COLOR = 'rgba(0,0,0,0.35)';
 // ═══════════════════════════════════════════
 
 export function renderTower(ctx: CanvasRenderingContext2D, tower: Tower, grid: Grid): void {
+  if (!tower.alive) return;
+
   const pos = grid.gridToPixel(tower.gridX, tower.gridY);
   const realm = REALMS[tower.level - 1];
   const size = 20 + tower.level * 4;
@@ -83,11 +85,40 @@ export function renderTower(ctx: CanvasRenderingContext2D, tower: Tower, grid: G
   ctx.textBaseline = 'middle';
   ctx.fillText(tower.config.icon, pos.x, pos.y - 2);
 
+  // Damage flash overlay
+  if (tower.damageFlashTimer > 0) {
+    ctx.fillStyle = 'rgba(255, 0, 0, 0.35)';
+    ctx.beginPath();
+    drawDBShape(ctx, pos.x, pos.y, size);
+    ctx.fill();
+  }
+
   // Realm name below
   ctx.fillStyle = '#ffd740';
   ctx.font = 'bold 11px "Microsoft YaHei", sans-serif';
   ctx.textAlign = 'center';
   ctx.fillText(realm.name, pos.x, pos.y + size + 13);
+
+  // Tower HP bar (only when damaged)
+  if (tower.hp < tower.maxHp) {
+    const bw = 40;
+    const bh = 3;
+    const by = pos.y + size + 23;
+    // BG
+    ctx.fillStyle = '#333';
+    ctx.strokeStyle = '#111';
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.roundRect(pos.x - bw / 2, by, bw, bh, 2);
+    ctx.fill();
+    ctx.stroke();
+    // Fill
+    const ratio = tower.hp / tower.maxHp;
+    ctx.fillStyle = ratio > 0.5 ? '#76ff03' : ratio > 0.25 ? '#ffd600' : '#ff1744';
+    ctx.beginPath();
+    ctx.roundRect(pos.x - bw / 2, by, bw * ratio, bh, 2);
+    ctx.fill();
+  }
 
   // Level stars (DB power level stars)
   const starY = pos.y - size - 10;
@@ -299,6 +330,28 @@ export function renderEnemy(ctx: CanvasRenderingContext2D, enemy: Enemy): void {
     ctx.closePath();
     ctx.fill();
     ctx.stroke();
+
+    // Tower-destroying attack aura
+    if (enemy.isAttacking) {
+      const auraGrad = ctx.createRadialGradient(x, y, s * 0.4, x, y, s * 1.6);
+      auraGrad.addColorStop(0, 'rgba(255, 40, 40, 0.5)');
+      auraGrad.addColorStop(1, 'rgba(255, 40, 40, 0)');
+      ctx.fillStyle = auraGrad;
+      ctx.beginPath();
+      ctx.arc(x, y, s * 1.6, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Rotating energy sparks
+      ctx.strokeStyle = 'rgba(255, 80, 80, 0.7)';
+      ctx.lineWidth = 2;
+      for (let i = 0; i < 4; i++) {
+        const angle = (Math.PI * 2 * i) / 4 + performance.now() * 0.006;
+        ctx.beginPath();
+        ctx.moveTo(x + Math.cos(angle) * s * 0.9, y + Math.sin(angle) * s * 0.9);
+        ctx.lineTo(x + Math.cos(angle) * (s * 0.9 + 14), y + Math.sin(angle) * (s * 0.9 + 14));
+        ctx.stroke();
+      }
+    }
   }
 
   // HP bar (DB scouter-style)

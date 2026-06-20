@@ -21,6 +21,9 @@ export interface Enemy {
   alive: boolean;
   config: EnemyConfig;
   slowFactor: number; // 1.0 = normal, 0.5 = half speed
+  attackCooldownRemaining: number;
+  isAttacking: boolean;
+  attackTargetId: number | null;
 }
 
 let nextEnemyId = 1;
@@ -42,5 +45,8 @@ export function createEnemy(type: EnemyType, startX: number, startY: number): En
     alive: true,
     config,
     slowFactor: 1.0,
+    attackCooldownRemaining: config.attackCooldown ?? 0,
+    isAttacking: false,
+    attackTargetId: null,
   };
 }

@@ -10,6 +10,7 @@ import { TargetingSystem } from '../systems/TargetingSystem';
 import { CombatSystem } from '../systems/CombatSystem';
 import { EconomySystem } from '../systems/EconomySystem';
 import { EffectSystem } from '../systems/EffectSystem';
+import { BossSystem } from '../systems/BossSystem';
 import { Tower } from '../entities/Tower';
 import { Enemy } from '../entities/Enemy';
 import { Projectile } from '../entities/Projectile';
@@ -32,6 +33,7 @@ export class GameScene extends Scene {
   private pathSystem: PathSystem;
   private targetingSystem: TargetingSystem;
   private combatSystem: CombatSystem;
+  private bossSystem: BossSystem;
   private economySystem = new EconomySystem();
   private effectSystem = new EffectSystem();
   private towerPanel = new TowerPanelUI();
@@ -61,6 +63,7 @@ export class GameScene extends Scene {
     this.pathSystem = new PathSystem(level.waypoints, this.grid);
     this.targetingSystem = new TargetingSystem(this.grid);
     this.combatSystem = new CombatSystem(this.grid);
+    this.bossSystem = new BossSystem(this.grid);
   }
 
   enter(): void {
@@ -183,14 +186,29 @@ export class GameScene extends Scene {
     this.waveSystem.update(scaledDt, this.enemies);
     this.pathSystem.update(scaledDt, this.enemies);
     this.targetingSystem.update(this.towers, this.enemies);
+    this.bossSystem.update(scaledDt, this.enemies, this.towers, this.particles);
     this.combatSystem.update(scaledDt, this.towers, this.enemies, this.projectiles, this.particles);
     this.combatSystem.updateDebuffs(scaledDt, this.enemies);
     this.effectSystem.update(scaledDt, this.particles);
 
     // Clean up dead entities
     this.enemies = this.enemies.filter(e => e.alive);
+    this.towers = this.towers.filter(t => t.alive);
     this.projectiles = this.projectiles.filter(p => p.alive);
     this.particles = this.particles.filter(p => p.alive);
+
+    // Clear selected tower if it was destroyed
+    if (this.selectedTower && !this.selectedTower.alive) {
+      this.selectedTower = null;
+      this.upgradePanel.setTower(null);
+    }
+
+    // Tick tower damage flash timers
+    for (const tower of this.towers) {
+      if (tower.damageFlashTimer > 0) {
+        tower.damageFlashTimer -= scaledDt;
+      }
+    }
 
     // Update UI state
     this.towerPanel.updateAfford((cost) => this.spirit >= cost);

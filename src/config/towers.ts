@@ -12,6 +12,7 @@ export interface TowerConfig {
   outlineColor: string; // thick DB outline
   glowColor: string;    // ki aura color
   icon: string;
+  hp: number;
   special: 'single' | 'splash' | 'dot' | 'chain';
   splashRadius?: number;
   dotDamage?: number;
@@ -32,6 +33,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     outlineColor: '#8b2a0a',
     glowColor: '#ffd740',
     icon: '⚔',
+    hp: 200,
     special: 'single',
   },
   array: {
@@ -46,6 +48,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     outlineColor: '#0a2a5a',
     glowColor: '#64b5f6',
     icon: '◎',
+    hp: 180,
     special: 'splash',
     splashRadius: 60,
   },
@@ -61,6 +64,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     outlineColor: '#1b5e20',
     glowColor: '#81c784',
     icon: '☯',
+    hp: 150,
     special: 'dot',
     dotDamage: 8,
     dotDuration: 3,
@@ -77,6 +81,7 @@ export const TOWER_CONFIGS: Record<TowerType, TowerConfig> = {
     outlineColor: '#6a1b7a',
     glowColor: '#ea80fc',
     icon: '㊯',
+    hp: 170,
     special: 'chain',
     chainCount: 3,
   },
